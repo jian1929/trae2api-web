@@ -17,6 +17,7 @@ tw2api
 # 文档(doc 排除上传): 本地 md 不入库,README 除外
 *.md
 !README.md
+!DEPLOY-NOTES.md
 docs/*
 !docs/RESEARCH.md
 !docs/logo.svg

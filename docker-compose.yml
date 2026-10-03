@@ -1,13 +1,23 @@
 services:
   tw2api:
     build: .
+    image: trae2api-web:latest
     container_name: trae2api-web
     restart: unless-stopped
     environment:
       - TZ=Asia/Shanghai
-      - TW2A_API_KEY=${TW2A_API_KEY:?set TW2A_API_KEY in .env or shell}   # key 走 env，不落盘 git
+      - TW2A_API_KEY=${TW2A_API_KEY}
+      - NO_PROXY=192.168.0.0/16,127.0.0.1,localhost
+      - no_proxy=192.168.0.0/16,127.0.0.1,localhost
     ports:
-      - "7864:7864"
+      - "7865:7865"
     volumes:
       - ./auths:/app/auths
       - ./data:/app/data
+      - ./config.json:/app/config.json:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:7865/healthz"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
